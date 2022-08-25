@@ -4,12 +4,10 @@ import random
 
 class Game:
 	def __init__(self):
-		self.phrase = None
 		self.game_guesses = [' ']
 		self.phrase_list = []
-		self.active = None
-		self.lives = 5
-		self.deaths = 0
+		self.active_phrase = None
+		self.misses = 0
 
 
 	def __str__(self):
@@ -22,30 +20,27 @@ class Game:
 		for letter in self.game_guesses:
 			if letter not in Game.active_phrase(self).phrase:
 				count += 1
-				self.deaths =+ count
-			if count > 5:
+				self.misses =+ count
+			if self.misses == 5:
 				return "end loop"	
 		return
 		
 		
 	def phrases(self):
 		"""stores five phrase objects"""
-		phrase_1 = Phrase('cost an arm and a leg')
-		self.phrase_list.append(phrase_1)
-		phrase_2 = Phrase('A piece of cake')
-		self.phrase_list.append(phrase_2)
-		phrase_3 = Phrase('Let the cat out of the bag')
-		self.phrase_list.append(phrase_3)
-		phrase_4 = Phrase('feel under the weather')
-		self.phrase_list.append(phrase_4)
-		phrase_5 = Phrase('kill two birds with one stone')
-		self.phrase_list.append(phrase_5)
+		self.phrase_list = [
+			Phrase('cost an arm and a leg'),
+			Phrase('A piece of cake'),
+			Phrase('Let the cat out of the bag'),
+			Phrase('feel under the weather'),
+			Phrase('kill two birds with one stone'),
+		]
 		return
 
 
 	def active_phrase(self):
 		"""the current phrase that is being used in the game"""
-		return self.active
+		return self.active_phrase
 
 
 	def guesses(self):
@@ -59,7 +54,7 @@ class Game:
 		Game.phrases(self)
 		Game.get_random_phrase(self) 
 		while True: #Game.active_phrase(self).check_complete(self.game_guesses) or Game.missed(self) != "end loop":
-			print("You have {} lives left".format(self.lives-self.deaths))
+			print("You have {} lives left".format(5 - self.misses))
 			Game.active_phrase(self).display(self.game_guesses)
 			Game.get_guess(self)
 			Game.missed(self)
@@ -75,8 +70,7 @@ class Game:
 		if play_again == "y":
 			self.game_guesses.clear()
 			self.game_guesses.append(' ')
-			self.lives = 5
-			self.deaths = 0
+			self.misses = 0
 			Game.start(self)
 		else:
 			Game.game_over(self)
@@ -85,14 +79,13 @@ class Game:
 	def get_random_phrase(self):
 		"""random retrieves a phrase to use in the game"""
 		random_phrase = random.choice(self.phrase_list)
-		self.active = random_phrase
+		self.active_phrase = random_phrase
 		return random_phrase
 
 
 	def welcome(self):
 		"""prints a welcome message to the user"""
 		print("~~~Welcome to Phrase hunters!!!~~~")
-		#print("You have {} lives, try to gues the phrase!".format(self.lives))
 	 
 
 	def get_guess(self):
