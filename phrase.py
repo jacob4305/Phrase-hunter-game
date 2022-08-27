@@ -2,7 +2,6 @@ class Phrase:
 	
 	def __init__(self, phrase):
 		self.phrase = phrase.lower()
-		self.guesses = [' ']
 
 
 	def __str__(self):
@@ -16,10 +15,6 @@ class Phrase:
 			else:
 				print("_", end="")
 		print("\n")
-
-
-	def clear_guesses(self):
-		self.guesses.clear()
 
 		
 	def check_letter(self, letter):
