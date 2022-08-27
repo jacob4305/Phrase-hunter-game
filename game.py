@@ -5,63 +5,50 @@ import random
 class Game:
 	def __init__(self):
 		self.game_guesses = [' ']
-		self.phrase_list = []
-		self.active_phrase = None
-		self.misses = 0
-		
-
-	def missed(self):
-		"""tracks the number of incorrect guesses"""
-		count = 0
-		for letter in self.game_guesses:
-			if letter not in Game.active_phrase(self).phrase:
-				count += 1
-				self.misses =+ count
-			if self.misses == 5:
-				return "end loop"	
-		return
-		
-		
-	def phrases(self):
-		"""stores five phrase objects"""
 		self.phrase_list = [
 			Phrase('cost an arm and a leg'),
 			Phrase('A piece of cake'),
 			Phrase('Let the cat out of the bag'),
 			Phrase('feel under the weather'),
 			Phrase('kill two birds with one stone'),
-		]
+	]
+		self.active_phrase = None 
+		self.misses = 0
+
+
+	def __str__(self):
+		return f'{self.phrase}'
+
+
+	def missed(self):
+		"""tracks the number of incorrect guesses"""
+		count = 0
+		for letter in self.game_guesses:
+			if letter not in self.active_phrase.phrase:
+				count += 1
+				self.misses =+ count
+			if self.misses == 5:
+				return "end loop"	
 		return
-
-
-	def active_phrase(self):
-		"""the current phrase that is being used in the game"""
-		return self.active_phrase
-
-
-	def guesses(self):
-		"""contains a list of the games guesses"""
-		return 
 
 
 	def start(self):
 		"""contains the main game loop"""
 		Game.welcome(self)
-		Game.phrases(self)
 		Game.get_random_phrase(self) 
-		while True: #Game.active_phrase(self).check_complete(self.game_guesses) or Game.missed(self) != "end loop":
+		while True: 
 			print("You have {} lives left".format(5 - self.misses))
-			Game.active_phrase(self).display(self.game_guesses)
+			self.active_phrase.display(self.game_guesses)
 			Game.get_guess(self)
 			Game.missed(self)
-			Game.active_phrase(self).check_complete(self.game_guesses)
-			if Game.active_phrase(self).check_complete(self.game_guesses) == "end loop":
+			self.active_phrase.check_complete(self.game_guesses)
+			if self.active_phrase.check_complete(self.game_guesses) == "end loop":
 				print("You got it!!!")
 				break
 			if Game.missed(self) == "end loop":
 				print("Bummer looks like you ran out of lives")
 				break
-		print(f'{Game.active_phrase(self).phrase} was the correct awnser!')
+		print(f'{self.active_phrase.phrase} was the correct awnser!')
 		play_again = input("Do you want to play again?(y/n)~~> ").lower()
 		if play_again == "y":
 			self.game_guesses.clear()
@@ -91,7 +78,7 @@ class Game:
 			try:
 				guess = int(guess)
 				print("Numbers are not allowed, please enter a letter")
-				Game.active_phrase(self).display(self.game_guesses)
+				self.active_phrase.display(self.game_guesses)
 				continue
 			except ValueError:
 				print("\n")
@@ -101,10 +88,10 @@ class Game:
 						break
 				if len(guess) > 1:
 					print("Please enter a single letter")
-					Game.active_phrase(self).display(self.game_guesses)
+					self.active_phrase.display(self.game_guesses)
 				else:
 					print("Please enter a letter")
-					Game.active_phrase(self).display(self.game_guesses)
+					self.active_phrase.display(self.game_guesses)
 		return
 
 
